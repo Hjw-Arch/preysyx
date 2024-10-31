@@ -1,7 +1,7 @@
 # git_autocommit.mk
 
 # 自动执行 Git 操作的默认消息
-GIT_COMMIT_MSG ?= "Auto commit by Makefile"
+GIT_COMMIT_MSG ?= Auto commit by Makefile
 
 ROOT_DIR := ~/preysyx
 
