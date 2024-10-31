@@ -19,7 +19,7 @@ ringbuffer *ringBuffer_create(int length) {
     if (rb == NULL) {
         return NULL; // 分配失败
     }
-    rb->buffer = calloc(1, length);
+    rb->buffer = calloc(length, 1);
     if (rb->buffer == NULL) {
         free(rb);
         return NULL;
@@ -61,7 +61,7 @@ int ringBuffer_available_data(ringbuffer *buffer) {
 
 // 获取环形缓冲区中的可用空间
 int ringBuffer_available_space(ringbuffer *buffer) {
-    return buffer->length - ringBuffer_available_data(buffer) - 1;
+    return buffer->length - ringBuffer_available_data(buffer);
 }
 
 
