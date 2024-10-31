@@ -226,7 +226,7 @@ char *all_tests() {
     test_unshift();
     test_remove();
     test_shift();
-    // test_destroy();
+    test_destroy();
 
     return NULL;
 }
