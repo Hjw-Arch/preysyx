@@ -2,7 +2,9 @@ CFLAGS=-Wall -g
 
 include ~/preysyx/git_autocommit.mk
 
-all: ex13
+all:$(.DEFAULT_GOAL)
+
+run:ex14
 
 clean:
-	rm -f ex13
+	rm -f ex14
