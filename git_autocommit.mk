@@ -6,7 +6,6 @@ GIT_COMMIT_MSG ?= Auto commit by Makefile
 ROOT_DIR := ~/preysyx
 
 # 定义前置操作
-.PHONY: pre_git
 pre_git:
 	@cd $(ROOT_DIR) && git add .
 	@if [ -n "$$(git diff --cached)" ]; then \
