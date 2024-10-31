@@ -300,8 +300,6 @@ char *test_merge_sort()
     mu_assert(is_sorted(res2), "Should still be sorted after merge sort.");
     List_destroy(res2);
 
-
-    // List_destroy(words);
     return NULL;
 }
 
