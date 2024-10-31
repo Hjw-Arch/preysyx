@@ -272,9 +272,9 @@ char *test_bubble_sort()
     bubble_sort(words);
     mu_assert(is_sorted(words), "Words are not sorted after bubble sort.");
 
-    // // should work on an already sorted list
-    // bubble_sort(words);
-    // mu_assert(is_sorted(words), "Words should be sort if already bubble sorted.");
+    // should work on an already sorted list
+    bubble_sort(words);
+    mu_assert(is_sorted(words), "Words should be sort if already bubble sorted.");
 
     // List_destroy(words);
 
