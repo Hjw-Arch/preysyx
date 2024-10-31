@@ -2,7 +2,7 @@ CFLAGS=-Wall -g
 
 include ~/preysyx/git_autocommit.mk
 
-all:ex14 commit
+all:ex15 commit
 
 clean:
-	rm -f ex14
+	rm -f ex15
