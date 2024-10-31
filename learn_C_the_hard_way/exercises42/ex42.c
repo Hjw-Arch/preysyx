@@ -144,52 +144,94 @@ void *List_copy(List *list) {
 }
 
 
-static Stack *stack = NULL;
+// static Stack *stack = NULL;
+// char *tests[] = {"test1 data", "test2 data", "test3 data"};
+// #define NUM_TESTS 3
+
+
+// char *test_create()
+// {
+//     stack = Stack_create();
+//     mu_assert(stack != NULL, "Failed to create stack.");
+
+//     return NULL;
+// }
+
+// char *test_destroy()
+// {
+//     mu_assert(stack != NULL, "Failed to make stack #2");
+//     Stack_destroy(stack);
+
+//     return NULL;
+// }
+
+// char *test_push_pop()
+// {
+//     int i = 0;
+//     for(i = 0; i < NUM_TESTS; i++) {
+//         Stack_push(stack, tests[i]);
+//         mu_assert(Stack_peek(stack) == tests[i], "Wrong next value.");
+//     }
+
+//     mu_assert(Stack_count(stack) == NUM_TESTS, "Wrong count on push.");
+
+
+//     for(i = NUM_TESTS - 1; i >= 0; i--) {
+//         char *val = Stack_pop(stack);
+//         mu_assert(val == tests[i], "Wrong value on pop.");
+//     }
+
+//     mu_assert(Stack_count(stack) == 0, "Wrong count after pop.");
+
+//     return NULL;
+// }
+
+static Queue *queue = NULL;
 char *tests[] = {"test1 data", "test2 data", "test3 data"};
 #define NUM_TESTS 3
 
 
 char *test_create()
 {
-    stack = Stack_create();
-    mu_assert(stack != NULL, "Failed to create stack.");
+    queue = Queue_create();
+    mu_assert(queue != NULL, "Failed to create queue.");
 
     return NULL;
 }
 
 char *test_destroy()
 {
-    mu_assert(stack != NULL, "Failed to make stack #2");
-    Stack_destroy(stack);
+    mu_assert(queue != NULL, "Failed to make queue #2");
+    Queue_destroy(queue);
 
     return NULL;
 }
 
-char *test_push_pop()
+char *test_send_recv()
 {
     int i = 0;
     for(i = 0; i < NUM_TESTS; i++) {
-        Stack_push(stack, tests[i]);
-        mu_assert(Stack_peek(stack) == tests[i], "Wrong next value.");
+        Queue_send(queue, tests[i]);
+        mu_assert(Queue_peek(queue) == tests[0], "Wrong next value.");
     }
 
-    mu_assert(Stack_count(stack) == NUM_TESTS, "Wrong count on push.");
+    mu_assert(Queue_count(queue) == NUM_TESTS, "Wrong count on send.");
 
-
-    for(i = NUM_TESTS - 1; i >= 0; i--) {
-        char *val = Stack_pop(stack);
-        mu_assert(val == tests[i], "Wrong value on pop.");
+    for(i = 0; i < NUM_TESTS; i++) {
+        char *val = Queue_recv(queue);
+        mu_assert(val == tests[i], "Wrong value on recv.");
     }
 
-    mu_assert(Stack_count(stack) == 0, "Wrong count after pop.");
+    mu_assert(Queue_count(queue) == 0, "Wrong count after recv.");
 
     return NULL;
 }
 
 char *all_tests() {
     test_create();
-    test_push_pop();
+    test_send_recv();
     test_destroy();
+
 
     return NULL;
 }

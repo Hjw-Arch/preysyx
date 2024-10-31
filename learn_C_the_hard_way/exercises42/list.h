@@ -24,8 +24,8 @@ void List_clear(List *list);
 void List_clear_destroy(List *list);
 
 #define List_count(A) ((A)->count)
-#define List_first(A) ((A)->first)
-#define List_last(A)  ((A)->last)
+#define List_first(A) ((A)->first->value)
+#define List_last(A)  ((A)->last->value)
 
 void List_push(List *list, void *value);
 void *List_pop(List *list);
