@@ -112,7 +112,7 @@ int main() {
     }
 
     // 写入数据
-    char data[] = "hello";
+    char data[] = "hello World!";
     if (ringBuffer_write(rb, data, strlen(data)) == -1) {
         printf("写入失败，空间不足！\n");
     }
