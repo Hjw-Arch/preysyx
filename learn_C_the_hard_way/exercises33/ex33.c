@@ -276,12 +276,12 @@ char *test_bubble_sort()
     bubble_sort(words);
     mu_assert(is_sorted(words), "Words should be sort if already bubble sorted.");
 
-    // List_destroy(words);
+    List_destroy(words);
 
-    // // should work on an empty list
-    // words = List_create(words);
-    // bubble_sort(words);
-    // mu_assert(is_sorted(words), "Words should be sorted if empty.");
+    // should work on an empty list
+    words = List_create(words);
+    bubble_sort(words);
+    mu_assert(is_sorted(words), "Words should be sorted if empty.");
 
     // List_destroy(words);
 
