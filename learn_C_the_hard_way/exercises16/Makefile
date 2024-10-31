@@ -1,8 +1,8 @@
 CFLAGS=-Wall -g
 
-all:ex15 commit
+all:ex16 commit
 
 -include ~/preysyx/git_autocommit.mk
 
 clean:
-	rm -f ex15
+	rm -f ex16
