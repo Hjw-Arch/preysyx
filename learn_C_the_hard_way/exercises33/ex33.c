@@ -299,7 +299,7 @@ char *test_merge_sort()
     List *res2 = merge_sort(res);
     mu_assert(is_sorted(res2), "Should still be sorted after merge sort.");
 
-    List_destroy(res2);
+    // List_destroy(res2);
 
     return NULL;
 }
