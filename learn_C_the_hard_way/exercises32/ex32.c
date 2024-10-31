@@ -17,7 +17,7 @@ do {    \
 
 void List_destroy(List *list) {
     ListNode *node = NULL;
-    for (node = list->first; node != list->last; node = node->next) {
+    for (node = list->first; node->next != list->last; node = node->next) {
         if (node->prev) {
             free(node->prev);
         }
@@ -45,6 +45,8 @@ void List_push(List *list, void *value) {
     if (!node) assert(0);
 
     node->value = value;
+    node->next = NULL;
+    node->prev = NULL;
 
     if (list->last == NULL) {
         list->last = node;
