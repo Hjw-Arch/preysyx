@@ -22,15 +22,15 @@ void List_destroy(List *list) {
             free(node->prev);
         }
     }
-    free(node);
+    // free(node);
 }
 
 void List_clear(List *list) {
     ListNode *node = NULL;
     for (node = list->first; node != NULL; node = node->next) {
-        // if (node->value) {
-        //     free(node->value);
-        // }
+        if (node->value) {
+            free(node->value);
+        }
     }
 }
 
