@@ -17,7 +17,7 @@ do {    \
 
 void List_destroy(List *list) {
     ListNode *node = NULL;
-    for (node = list->first; node != NULL; node = node->next) {
+    for (node = list->first; node->next != NULL; node = node->next) {
         if (node->prev) {
             free(node->prev);
         }
