@@ -309,7 +309,7 @@ char *test_merge_sort()
 char *all_tests()
 {
     test_bubble_sort();
-    // test_merge_sort();
+    test_merge_sort();
 
     return NULL;
 }
