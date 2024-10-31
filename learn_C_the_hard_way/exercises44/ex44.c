@@ -19,7 +19,7 @@ ringbuffer *ringBuffer_create(int length) {
     if (rb == NULL) {
         return NULL; // 分配失败
     }
-    rb->buffer = (char *)calloc(1, length);
+    rb->buffer = calloc(1, length);
     if (rb->buffer == NULL) {
         free(rb);
         return NULL;
