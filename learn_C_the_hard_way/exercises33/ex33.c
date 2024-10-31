@@ -268,9 +268,9 @@ char *test_bubble_sort()
 {
     List *words = create_words();
 
-    // // should work on a list that needs sorting
-    // bubble_sort(words);
-    // mu_assert(is_sorted(words), "Words are not sorted after bubble sort.");
+    // should work on a list that needs sorting
+    bubble_sort(words);
+    mu_assert(is_sorted(words), "Words are not sorted after bubble sort.");
 
     // // should work on an already sorted list
     // bubble_sort(words);
