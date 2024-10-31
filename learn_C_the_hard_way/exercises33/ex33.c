@@ -230,8 +230,8 @@ List *merge_sort(List *list) {
     // 合并两个有序列表
     List *sortedList = merge(left, right);
 
-    List_clear_destroy(left);
-    List_clear_destroy(right);
+    List_destroy(left);
+    List_destroy(right);
 
     return sortedList;
 }
@@ -298,9 +298,10 @@ char *test_merge_sort()
 
     List *res2 = merge_sort(res);
     mu_assert(is_sorted(res2), "Should still be sorted after merge sort.");
+    List_destroy(res2);
+    List_destroy(res);
 
-    // List_destroy(res2);
-
+    // List_destroy(words);
     return NULL;
 }
 
