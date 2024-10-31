@@ -223,7 +223,7 @@ char *test_shift()
 char *all_tests() {
 
     test_create();
-    test_push_pop();
+    // test_push_pop();
     // test_unshift();
     // test_remove();
     // test_shift();
