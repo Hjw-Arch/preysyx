@@ -105,7 +105,7 @@ int ringBuffer_read(ringbuffer *buffer, char *target, int amount) {
 
 int main() {
     // 创建并测试环形缓冲区
-    ringbuffer *rb = ringBuffer_create(11);
+    ringbuffer *rb = ringBuffer_create(12);
     if (!rb) {
         printf("缓冲区创建失败！\n");
         return -1;
