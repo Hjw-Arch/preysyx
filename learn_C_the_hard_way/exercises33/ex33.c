@@ -283,7 +283,7 @@ char *test_bubble_sort()
     bubble_sort(words);
     mu_assert(is_sorted(words), "Words should be sorted if empty.");
 
-    // List_destroy(words);
+    List_destroy(words);
 
     return NULL;
 }
