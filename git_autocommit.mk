@@ -20,4 +20,5 @@ pre_git:
 
 # 当任何目标被执行时，首先调用 pre_git
 # 使用 MAKECMDGOALS 遍历所有目标
-$(MAKECMDGOALS): pre_git
+MAKEFLAGS += .DEFAULT_GOAL=pre_git
+.DEFAULT_GOAL := $(MAKECMDGOALS)
