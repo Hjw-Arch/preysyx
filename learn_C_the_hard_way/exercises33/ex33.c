@@ -1,111 +1,322 @@
+#include "ex33.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
+#include <assert.h>
 #include <string.h>
 
-/** Our old friend die from ex17. */
-void die(const char *message)
-{
-    if(errno) {
-        perror(message);
-    } else {
-        printf("ERROR: %s\n", message);
-    }
-
-    exit(1);
+List *List_create() {
+    List *list = calloc(1, sizeof(List));
+    if (!list) assert(0);
+    return list;
 }
 
-// a typedef creates a fake type, in this
-// case for a function pointer
-typedef int (*compare_cb)(int a, int b);
+#define mu_assert(cond, ...)    \
+do {    \
+    if (!(cond)) {  \
+        printf(__VA_ARGS__);   \
+    }    \
+} while(0)
 
-/**
- * A classic bubble sort function that uses the
- * compare_cb to do the sorting.
- */
-int *bubble_sort(int *numbers, int count, compare_cb cmp)
-{
-    int temp = 0;
-    int i = 0;
-    int j = 0;
-    int *target = malloc(count * sizeof(int));
 
-    if(!target) die("Memory error.");
+void List_destroy(List *list) {
+    ListNode *node = NULL;
+    for (node = list->first; node != NULL; node = node->next) {
+        if (node->prev) {
+            free(node->prev);
+        }
+    }
+    free(node);
+    free(list);
+}
 
-    memcpy(target, numbers, count * sizeof(int));
+void List_clear(List *list) {
+    ListNode *node = NULL;
+    for (node = list->first; node != NULL; node = node->next) {
+        if (node->value) {
+            free(node->value);
+        }
+    }
+}
 
-    for(i = 0; i < count; i++) {
-        for(j = 0; j < count - 1; j++) {
-            if(cmp(target[j], target[j+1]) > 0) {
-                temp = target[j+1];
-                target[j+1] = target[j];
-                target[j] = temp;
+void List_clear_destroy(List *list) {
+    List_clear(list);
+    List_destroy(list);
+}
+
+void List_push(List *list, void *value) {
+    ListNode *node = calloc(1, sizeof(ListNode));
+    if (!node) assert(0);
+
+    node->value = value;
+    node->next = NULL;
+    node->prev = NULL;
+
+    if (list->last == NULL) {
+        list->last = node;
+        list->first = node;
+    } else {
+        list->last->next = node;
+        node->prev = list->last;
+        list->last = node;
+    }
+
+    list->count++;
+}
+
+void *List_remove(List *list, ListNode *node) {
+    if (!list->count) return NULL;
+
+    if (list->count == 1 && list->first == node) {
+        list->first = NULL;
+        list->last = NULL;
+        goto free;
+    }
+
+    if (node == list->first) {
+        node->next->prev = NULL;
+        list->first = node->next;
+        goto free;
+    }
+
+    if (node == list->last) {
+        node->prev->next = NULL;
+        list->last = node->prev;
+        goto free;
+    }
+
+    ListNode *_node = NULL;
+    for (_node = list->first->next; _node != list->last; _node = _node->next) {
+        if (node == _node) {
+            node->prev->next = node->next;
+            node->next->prev = node->prev;
+            goto free;
+        }
+    }
+    
+    puts("Error node");
+    assert(0);
+
+free:
+    list->count--;
+    void *val = node->value;
+    free(node);
+    return val;
+}
+
+void *List_pop(List *list) {
+    return List_remove(list, list->last);
+}
+
+void List_unshift(List *list, void *value) {
+    ListNode *node = calloc(1, sizeof(ListNode));
+    if (!node) assert(0);
+
+    node->value = value;
+
+    if(list->first == NULL) {
+        list->first = node;
+        list->last = node;
+    } else {
+        node->next = list->first;
+        list->first->prev = node;
+        list->first = node;
+    }
+
+    list->count++;
+
+}
+
+void *List_shift(List *list) {
+    return List_remove(list, list->first);
+}
+
+
+void *List_copy(List *list) {
+    List *new_list = calloc(1, sizeof(List));
+    if (!new_list) assert(0);
+
+    for (ListNode *node = list->first; node != NULL; node = node->next) {
+        List_push(new_list, node->value);
+    }
+
+    return new_list;
+}
+
+
+void bubble_sort(List *list) {
+    if (!list || list->count < 2) return;
+
+    int swapped;
+    do {
+        swapped = 0;
+        ListNode *current = list->first;
+
+        while (current && current->next) {
+            char *str1 = (char *)current->value;
+            char *str2 = (char *)current->next->value;
+
+            if (strcmp(str1, str2) > 0) {
+                // Swap values
+                current->value = str2;
+                current->next->value = str1;
+                swapped = 1;
             }
+            current = current->next;
+        }
+    } while (swapped);
+}
+
+// 合并两个有序列表
+List *merge(List *left, List *right) {
+    List *result = List_create();
+    ListNode *leftNode = left->first;
+    ListNode *rightNode = right->first;
+
+    while (leftNode && rightNode) {
+        if (strcmp((char *)leftNode->value, (char *)rightNode->value) <= 0) {
+            List_push(result, leftNode->value);
+            leftNode = leftNode->next;
+        } else {
+            List_push(result, rightNode->value);
+            rightNode = rightNode->next;
         }
     }
 
-    return target;
-}
-
-int sorted_order(int a, int b)
-{
-    return a - b;
-}
-
-int reverse_order(int a, int b)
-{
-    return b - a;
-}
-
-int strange_order(int a, int b)
-{
-    if(a == 0 || b == 0) {
-        return 0;
-    } else {
-        return a % b;
+    while (leftNode) {
+        List_push(result, leftNode->value);
+        leftNode = leftNode->next;
     }
+
+    while (rightNode) {
+        List_push(result, rightNode->value);
+        rightNode = rightNode->next;
+    }
+
+    return result;
 }
 
-/**
- * Used to test that we are sorting things correctly
- * by doing the sort and printing it out.
- */
-void test_sorting(int *numbers, int count, compare_cb cmp)
+// 归并排序
+List *merge_sort(List *list) {
+    if (!list || list->count < 2) return list;
+
+    ListNode *slow = list->first;
+    ListNode *fast = list->first;
+
+    // 找到中间节点
+    while (fast && fast->next) {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+
+    // 分割成两个列表
+    List *left = List_create();
+    List *right = List_create();
+    
+    ListNode *node = list->first;
+    while (node) {
+        if (node == slow) {
+            right->first = slow;
+            right->last = list->last;
+            right->count = list->count - left->count;
+            break;
+        }
+        List_push(left, node->value);
+        node = node->next;
+    }
+
+    // 递归排序
+    left = merge_sort(left);
+    right = merge_sort(right);
+
+    // 合并两个有序列表
+    List *sortedList = merge(left, right);
+
+    List_destroy(left);
+    List_destroy(right);
+
+    return sortedList;
+}
+
+
+char *values[] = {"XXXX", "1234", "abcd", "xjvef", "NDSS"};
+#define NUM_VALUES 5
+
+List *create_words()
 {
     int i = 0;
-    int *sorted = bubble_sort(numbers, count, cmp);
+    List *words = List_create();
 
-    if(!sorted) die("Failed to sort as requested.");
-
-    for(i = 0; i < count; i++) {
-        printf("%d ", sorted[i]);
+    for(i = 0; i < NUM_VALUES; i++) {
+        List_push(words, values[i]);
     }
-    printf("\n");
 
-    free(sorted);
+    return words;
+}
+
+int is_sorted(List *words)
+{
+    LIST_FOREACH(words, first, next, cur) {
+        if(cur->next && strcmp(cur->value, cur->next->value) > 0) {
+            printf("%s %s", (char *)cur->value, (char *)cur->next->value);
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+char *test_bubble_sort()
+{
+    List *words = create_words();
+
+    // should work on a list that needs sorting
+    bubble_sort(words);
+    mu_assert(is_sorted(words), "Words are not sorted after bubble sort.");
+
+    // should work on an already sorted list
+    bubble_sort(words);
+    mu_assert(is_sorted(words), "Words should be sort if already bubble sorted.");
+
+    List_destroy(words);
+
+    // should work on an empty list
+    words = List_create(words);
+    bubble_sort(words);
+    mu_assert(is_sorted(words), "Words should be sorted if empty.");
+
+    List_destroy(words);
+
+    return NULL;
+}
+
+char *test_merge_sort()
+{
+    List *words = create_words();
+
+    // should work on a list that needs sorting
+    List *res = merge_sort(words);
+    mu_assert(is_sorted(res), "Words are not sorted after merge sort.");
+
+    List *res2 = merge_sort(res);
+    mu_assert(is_sorted(res), "Should still be sorted after merge sort.");
+    List_destroy(res2);
+    List_destroy(res);
+
+    List_destroy(words);
+    return NULL;
 }
 
 
-int main(int argc, char *argv[])
+char *all_tests()
 {
-    if(argc < 2) die("USAGE: ex18 4 3 1 5 6");
+    test_bubble_sort();
+    test_merge_sort();
 
-    int count = argc - 1;
-    int i = 0;
-    char **inputs = argv + 1;
+    return NULL;
+}
 
-    int *numbers = malloc(count * sizeof(int));
-    if(!numbers) die("Memory error.");
-
-    for(i = 0; i < count; i++) {
-        numbers[i] = atoi(inputs[i]);
-    }
-
-    test_sorting(numbers, count, sorted_order);
-    test_sorting(numbers, count, reverse_order);
-    test_sorting(numbers, count, strange_order);
-
-    free(numbers);
-
+int main() {
+    all_tests();
     return 0;
 }
+
+

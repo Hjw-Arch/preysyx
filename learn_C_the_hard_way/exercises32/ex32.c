@@ -17,7 +17,7 @@ do {    \
 
 void List_destroy(List *list) {
     ListNode *node = NULL;
-    for (node = list->first; node != list->last; node = node->next) {
+    for (node = list->first; node != NULL; node = node->next) {
         if (node->prev) {
             free(node->prev);
         }
@@ -125,6 +125,18 @@ void List_unshift(List *list, void *value) {
 
 void *List_shift(List *list) {
     return List_remove(list, list->first);
+}
+
+
+void *List_copy(List *list) {
+    List *new_list = calloc(1, sizeof(List));
+    if (!new_list) assert(0);
+
+    for (ListNode *node = list->first; node != NULL; node = node->next) {
+        List_push(new_list, node->value);
+    }
+
+    return new_list;
 }
 
 static List *list = NULL;
