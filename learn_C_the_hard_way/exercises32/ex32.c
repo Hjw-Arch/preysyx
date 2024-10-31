@@ -152,7 +152,7 @@ char *test_destroy()
 char *test_push_pop()
 {
     List_push(list, test1);
-    mu_assert(List_last(list) == test1, "Wrong last value.");
+    mu_assert(List_last(list)->value == test1, "Wrong last value.");
 
     // List_push(list, test2);
     // mu_assert(List_last(list) == test2, "Wrong last value");
