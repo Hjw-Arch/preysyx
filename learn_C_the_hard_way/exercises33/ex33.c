@@ -211,13 +211,13 @@ List *merge_sort(List *list) {
     List *left = List_create();
     List *right = List_create();
     
+    int flag = 0;
     ListNode *node = list->first;
     while (node) {
-        if (node == slow) {
-            right->first = slow;
-            right->last = list->last;
-            right->count = list->count - left->count;
-            break;
+        if (node == slow || flag) {
+            flag = 1;
+            List_push(right, node->value);
+            node = node->next;
         }
         List_push(left, node->value);
         node = node->next;
@@ -282,7 +282,7 @@ char *test_bubble_sort()
     words = List_create(words);
     bubble_sort(words);
     mu_assert(is_sorted(words), "Words should be sorted if empty.");
-
+    
     List_destroy(words);
 
     return NULL;
@@ -299,6 +299,9 @@ char *test_merge_sort()
     List *res2 = merge_sort(res);
     mu_assert(is_sorted(res2), "Should still be sorted after merge sort.");
     List_destroy(res2);
+    List_destroy(res);
+
+    List_destroy(words);
 
     return NULL;
 }
