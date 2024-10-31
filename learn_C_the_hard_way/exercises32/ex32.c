@@ -163,12 +163,12 @@ char *test_push_pop()
     char *val = List_pop(list);
     mu_assert(val == test3, "Wrong value on pop.");
 
-    // val = List_pop(list);
-    // mu_assert(val == test2, "Wrong value on pop.");
+    val = List_pop(list);
+    mu_assert(val == test2, "Wrong value on pop.");
 
-    // val = List_pop(list);
-    // mu_assert(val == test1, "Wrong value on pop.");
-    // mu_assert(List_count(list) == 0, "Wrong count after pop.");
+    val = List_pop(list);
+    mu_assert(val == test1, "Wrong value on pop.");
+    mu_assert(List_count(list) == 0, "Wrong count after pop.");
 
     return NULL;
 }
