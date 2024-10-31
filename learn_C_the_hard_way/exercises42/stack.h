@@ -16,4 +16,6 @@ void (*Stack_clear_destroy)(Stack *stack) = List_clear_destroy;
 #define Stack_peek(S)    ((S)->last ? (S)->last->value : NULL)
 #define Stack_count(S)   ((S)->count)
 
+#define STACK_FOREACH(S, M, V) LIST_FOREACH(S, last, prev, V)
+
 #endif
