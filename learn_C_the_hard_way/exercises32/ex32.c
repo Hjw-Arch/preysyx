@@ -93,7 +93,6 @@ void *List_remove(List *list, ListNode *node) {
 free:
     list->count--;
     void *val = node->value;
-    if (node->value) free(node->value);
     free(node);
     return val;
 }
@@ -161,8 +160,8 @@ char *test_push_pop()
     mu_assert(List_last(list)->value == test3, "Wrong last value.");
     mu_assert(List_count(list) == 3, "Wrong count on push.");
 
-    // char *val = List_pop(list);
-    // mu_assert(val == test3, "Wrong value on pop.");
+    char *val = List_pop(list);
+    mu_assert(val == test3, "Wrong value on pop.");
 
     // val = List_pop(list);
     // mu_assert(val == test2, "Wrong value on pop.");
