@@ -212,16 +212,15 @@ List *merge_sort(List *list) {
     List *right = List_create();
     
     ListNode *node = list->first;
-    int flag = 0;
     while (node) {
-        if (node == slow || flag) {
-            flag = 1;
-            List_push(right, node->value);
-            node = node->next;
-        } else {
-            List_push(left, node->value);
-            node = node->next;
+        if (node == slow) {
+            right->first = slow;
+            right->last = list->last;
+            right->count = list->count - left->count;
+            break;
         }
+        List_push(left, node->value);
+        node = node->next;
     }
 
     // 递归排序
@@ -297,12 +296,11 @@ char *test_merge_sort()
     List *res = merge_sort(words);
     mu_assert(is_sorted(res), "Words are not sorted after merge sort.");
 
-    // List *res2 = merge_sort(res);
-    // mu_assert(is_sorted(res2), "Should still be sorted after merge sort.");
-    // List_destroy(res2);
-    // List_destroy(res);
+    List *res2 = merge_sort(res);
+    mu_assert(is_sorted(res2), "Should still be sorted after merge sort.");
 
-    // List_destroy(words);
+    List_destroy(res2);
+
     return NULL;
 }
 
