@@ -237,6 +237,44 @@ List *merge_sort(List *list) {
     return sortedList;
 }
 
+void List_insert_sorted(List *list, void *value) {
+    ListNode *newNode = calloc(1, sizeof(ListNode));
+    if (!newNode) assert(0);
+
+    newNode->value = value;
+
+    // 如果链表为空，或新值小于第一个元素
+    if (!list->first || strcmp((char *)value, (char *)list->first->value) < 0) {
+        newNode->next = list->first;
+        if (list->first) {
+            list->first->prev = newNode;
+        } else {
+            list->last = newNode; // 如果链表为空，更新last指针
+        }
+        list->first = newNode;
+    } else {
+        // 从第一个元素开始遍历
+        ListNode *current = list->first;
+        while (current->next && strcmp((char *)value, (char *)current->next->value) >= 0) {
+            current = current->next;
+        }
+        // 插入到current之后
+        newNode->next = current->next;
+        newNode->prev = current;
+        current->next = newNode;
+
+        // 更新last指针
+        if (newNode->next) {
+            newNode->next->prev = newNode;
+        } else {
+            list->last = newNode; // 如果插入在最后，更新last指针
+        }
+    }
+
+    list->count++;
+}
+
+
 
 char *values[] = {"XXXX", "1234", "abcd", "xjvef", "NDSS"};
 #define NUM_VALUES 5
