@@ -212,15 +212,16 @@ List *merge_sort(List *list) {
     List *right = List_create();
     
     ListNode *node = list->first;
+    int flag = 0;
     while (node) {
-        if (node == slow) {
-            right->first = slow;
-            right->last = list->last;
-            right->count = list->count - left->count;
-            break;
+        if (node == slow || flag) {
+            flag = 1;
+            List_push(right, node->value);
+            node = node->next;
+        } else {
+            List_push(left, node->value);
+            node = node->next;
         }
-        List_push(left, node->value);
-        node = node->next;
     }
 
     // 递归排序
@@ -230,8 +231,8 @@ List *merge_sort(List *list) {
     // 合并两个有序列表
     List *sortedList = merge(left, right);
 
-    List_destroy(left);
-    List_destroy(right);
+    List_clear_destroy(left);
+    List_clear_destroy(right);
 
     return sortedList;
 }
@@ -301,7 +302,7 @@ char *test_merge_sort()
     List_destroy(res2);
     List_destroy(res);
 
-    // List_destroy(words);
+    List_destroy(words);
     return NULL;
 }
 
