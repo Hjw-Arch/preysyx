@@ -127,7 +127,7 @@ int main() {
 
     // 查看当前缓冲区内容
     printf("缓冲区内容: ");
-    ringBuffer_gets(rb, 5);
+    ringBuffer_gets(rb, 6);
 
     // 销毁缓冲区
     ringBuffer_destroy(rb);
