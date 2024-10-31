@@ -17,12 +17,12 @@ do {    \
 
 void List_destroy(List *list) {
     ListNode *node = NULL;
-    for (node = list->first; node->next != NULL; node = node->next) {
-        // if (node->prev) {
-        //     free(node->prev);
-        // }
-    }
-    free(node);
+    // for (node = list->first; node->next != NULL; node = node->next) {
+    //     // if (node->prev) {
+    //     //     free(node->prev);
+    //     // }
+    // }
+    // free(node);
 }
 
 void List_clear(List *list) {
