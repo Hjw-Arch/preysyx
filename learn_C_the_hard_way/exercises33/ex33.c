@@ -218,9 +218,10 @@ List *merge_sort(List *list) {
             flag = 1;
             List_push(right, node->value);
             node = node->next;
+        } else {
+            List_push(left, node->value);
+            node = node->next;
         }
-        List_push(left, node->value);
-        node = node->next;
     }
 
     // 递归排序
